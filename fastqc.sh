@@ -20,7 +20,6 @@ echo "Slurm Job ID: $SLURM_JOB_ID , array number: $SLURM_ARRAY_TASK_ID"
 in_path='/home/groups/CEDAR/Strogant/projects/AMLcountdown/Replicate1/dedup_combined'
 out_path='/home/groups/CEDAR/goldmael/projects/AMLclock/qc/'
 
-/usr/bin/time \
 fastqc -t 4 -o ${out_path} ${in_path}/${sample}
 if [ $? -ne 0 ]; then
   echo "An error occurred with FastQC. Exit code: $?"
