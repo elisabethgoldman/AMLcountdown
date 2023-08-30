@@ -9,13 +9,13 @@
 #SBATCH --job-name=fastqc
 #SBATCH --cpus-per-task=1
 #SBATCH --mem=500MB
-#SBATCH --array=1
+#SBATCH --array=2-838%50
 
 module purge
 module load fastqc/0.11.9
 
-sample=`sed -n ${SLURM_ARRAY_TASK_ID}p idLists/Replicate1Bams`
-echo "Slurm Job ID: $SLURM_JOB_ID , array number: $SLURM_ARRAY_TASK_ID"
+sample=`sed -n ${SLURM_ARRAY_TASK_ID}p /home/groups/CEDAR/goldmael/projects/AMLclock/code/idLists/Replicate1Bams`
+echo "Slurm Job ID: $SLURM_ARRAY_JOB_ID , array number: $SLURM_ARRAY_TASK_ID"
 
 in_path='/home/groups/CEDAR/Strogant/projects/AMLcountdown/Replicate1/dedup_combined'
 out_path='/home/groups/CEDAR/goldmael/projects/AMLclock/qc/'
