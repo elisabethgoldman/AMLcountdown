@@ -10,8 +10,7 @@
 #SBATCH --cpus-per-task=4
 #SBATCH --nodes=1
 #SBATCH --mem-per-cpu=2GB
-#SBATCH --array=320,324,325,326,327,330,332,334,338,339,340,341,342,344,345,347,349,352,353,355,356,359,360,361,363,364,365,368,268,271,284,293
-
+#SBATCH --array=1
 
 module load bismark/0.19.0
 module load samtools
