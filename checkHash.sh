@@ -1,5 +1,6 @@
-## check if hashes are identical between file renames
 #!/bin/bash
+
+## check if hashes are identical between file renames
 
 #SBATCH --partition=exacloud
 #SBATCH --account=CEDAR
