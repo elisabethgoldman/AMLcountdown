@@ -1,11 +1,11 @@
 #!/bin/bash
 
-#SBATCH --time=03:00:00
+#SBATCH --time=04:00:00
 #SBATCH --job-name=bismark_extract
 #SBATCH --cpus-per-task=4
 #SBATCH --nodes=1
 #SBATCH --mem-per-cpu=550MB
-#SBATCH --array=14
+#SBATCH --array=101-336%20
 
 
 ##define log file path
@@ -22,8 +22,6 @@ function finish {
   else
     echo "Job failed with exit status $exit_status." >> $LOGFILE 2>&1
   fi
-  ## output usage 
-  sacct -j $SLURM_JOB_ID --units=G --format=JobIdRaw,Submit,Start,End,AllocNodes,ReqCPUs,AllocCPUs,TotalCPU,ReqMem,AveRSS,MaxRSS,AveVMSize,MaxVMSize,State,AveDiskWrite,MaxDiskWrite,NTasks >> $LOGFILE 2>&1
 }
 
 ## function to be called on exit
@@ -52,39 +50,6 @@ out_path="/home/groups/CEDAR/goldmael/projects/AMLclock/results/extracted/Replic
 bismark_methylation_extractor -s --multicore 4 --gzip --comprehensive --merge_non_CpG --bedGraph -o "${out_path}" "${in_path}/${bam}" >> $LOGFILE 2>&1
 
 
-## rename all relevant output files
-
-  filename="*${baseid}*.cov.gz"
-  # Extract the six-character ID and R1 or R2 indicators
-  id=$(echo "$filename" | sed -E 's/.*([P][0-9A-Za-z]{5}).*/\1/')
-  r_indicator=$(echo "$filename" | sed -E 's/.*(R[12]).*/\1/')
-  new_filename="Rep1_${id}_${r_indicator}.cov.gz"
-  echo $new_filename  >> $LOGFILE 2>&1
-  mv "$filename" "$new_filename" >> $LOGFILE 2>&1     
-
-  filename="*${baseid}*.bedGraph.gz"
-  id=$(echo "$filename" | sed -E 's/.*([P][0-9A-Za-z]{5}).*/\1/')
-  r_indicator=$(echo "$filename" | sed -E 's/.*(R[12]).*/\1/')
-  new_filename="Rep1_${id}_${r_indicator}.bedGraph.gz"
-  echo "$new_filename"  >> $LOGFILE 2>&1
-  mv "$filename" "$new_filename" >> $LOGFILE 2>&1     
-
-
-  filename="*${baseid}*.multiple.deduplicated_splitting_report.txt"
-  id=$(echo "$filename" | sed -E 's/.*([P][0-9A-Za-z]{5}).*/\1/')
-  r_indicator=$(echo "$filename" | sed -E 's/.*(R[12]).*/\1/')
-  new_filename="Rep1_${id}_${r_indicator}_splitting_report.txt"
-  mv "$filename" $new_filename" >> $LOGFILE 2>&1     
-
-
-  filename="CpG*${baseid}*.txt.gz"
-  id=$(echo "$filename" | sed -E 's/.*([P][0-9A-Za-z]{5}).*/\1/')
-  r_indicator=$(echo "$filename" | sed -E 's/.*(R[12]).*/\1/')
-  new_filename="CpG_context_Rep1_${id}_${r_indicator}.txt.gz" 
-  echo "${new_filename}" >> $LOGFILE 2>&1
-  mv "$filename" "$new_filename" >> $LOGFILE 2>&1
-
-
 ##remove non-CpG files
 
 if [ -n "$(ls ${out_path}/Non_CpG* 2>/dev/null)" ]; then
@@ -92,3 +57,5 @@ if [ -n "$(ls ${out_path}/Non_CpG* 2>/dev/null)" ]; then
 else
   echo "No Non_CpG files found for deletion." >> $LOGFILE 2>&1
 fi
+
+sacct -j $SLURM_JOB_ID --units=G --format=JobIdRaw,Submit,Start,End,AllocNodes,ReqCPUs,AllocCPUs,TotalCPU,ReqMem,AveRSS,MaxRSS,AveVMSize,MaxVMSize,State,AveDiskWrite,MaxDiskWrite,NTasks >> $LOGFILE 2>&1
