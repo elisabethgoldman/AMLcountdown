@@ -12,7 +12,7 @@ DIRECTORY="/metadata/"
 
 
 # Define the output file for the manifest
-OUTPUT_FILE="/metdata/file_manifest.csv"
+OUTPUT_FILE="file_manifest.csv"
 
 # write the header row to CSV file
 echo "File Name,File Path,File Size,Checksum" > "$OUTPUT_FILE"
