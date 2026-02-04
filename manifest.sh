@@ -1,18 +1,18 @@
 #!/bin/bash
 
-#SBATCH --partition=exacloud
+#SBATCH --partition=partition
 #SBATCH --account=CEDAR
-#SBATCH --time=12:00:00
+#SBATCH --time=2:00:00
 #SBATCH --output=manifest_%j.out
 #SBATCH --error=manifest_%j.err
 #SBATCH --job-name=manifest
 #SBATCH --mem=4GB
 
-DIRECTORY="/home/groups/CEDAR/Strogant/projects/AMLcountdown/Replicate1/dedup_combined"
+DIRECTORY="/metadata/"
 
 
 # Define the output file for the manifest
-OUTPUT_FILE="/home/groups/CEDAR/goldmael/projects/AMLclock/code/AMLcountdown/AMLcountdownRep1_file_manifest.csv"
+OUTPUT_FILE="/metdata/file_manifest.csv"
 
 # write the header row to CSV file
 echo "File Name,File Path,File Size,Checksum" > "$OUTPUT_FILE"
